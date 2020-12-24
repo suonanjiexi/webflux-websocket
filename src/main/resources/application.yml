@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: websocket
+server:
+  netty:
+    connection-timeout: 5000ms
+  port: 8080
+  servlet:
+    context-path: /ws
