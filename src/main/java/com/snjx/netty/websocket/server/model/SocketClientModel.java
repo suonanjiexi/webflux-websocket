@@ -8,6 +8,8 @@ import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
 import reactor.core.publisher.FluxSink;
 
+import java.io.Serializable;
+
 /**
  * @author by ernest
  * @version 1.0
@@ -17,8 +19,8 @@ import reactor.core.publisher.FluxSink;
 @Data
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SocketClientModel {
-
+public class SocketClientModel implements Serializable {
+    private static final long serialVersionUID = -6844241037131339521L;
     FluxSink<WebSocketMessage> fluxSink;
     WebSocketSession session;
 

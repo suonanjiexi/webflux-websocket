@@ -3,6 +3,7 @@ package com.snjx.netty.websocket.controller;
 import com.snjx.netty.websocket.server.model.SocketClientMapModel;
 import com.snjx.netty.websocket.server.model.SocketClientModel;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 
 /**
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/msg")
-public class SingleMsgController {
+public class MsgController {
 
     private static final SocketClientMapModel clients=SocketClientMapModel.getSingleton();
 
@@ -24,13 +25,13 @@ public class SingleMsgController {
      * @return
      */
     @GetMapping("/single")
-    public String sendSingleMessage(@RequestParam String sessionId, @RequestParam String msg) {
+    public Mono<String> sendSingleMessage(@RequestParam String sessionId, @RequestParam String msg) {
         SocketClientModel sender = clients.getClientMap().get(sessionId);
         if (sender != null) {
             sender.sendData(msg);
-            return String.format("Message '%s' sent to connection: %s.",msg, sessionId);
+            return Mono.just(String.format("Message '%s' sent to connection: %s.",msg, sessionId));
         } else {
-            return String.format("Connection of id '%s' doesn't exist", sessionId);
+            return Mono.just(String.format("Connection of id '%s' doesn't exist", sessionId));
         }
     }
     /**
@@ -40,13 +41,13 @@ public class SingleMsgController {
      * @return
      */
     @GetMapping("/group")
-    public String sendGroupMessage(@RequestParam String sessionId, @RequestParam String msg) {
+    public Mono<String> sendGroupMessage(@RequestParam String sessionId, @RequestParam String msg) {
         SocketClientModel sender = clients.getClientMap().get(sessionId);
         if (sender != null) {
             sender.sendData(msg);
-            return String.format("Message '%s' sent to connection: %s.",msg, sessionId);
+            return Mono.just(String.format("Message '%s' sent to connection: %s.",msg, sessionId));
         } else {
-            return String.format("Connection of id '%s' doesn't exist", sessionId);
+            return Mono.just(String.format("Connection of id '%s' doesn't exist", sessionId));
         }
     }
 }
