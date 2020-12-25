@@ -17,12 +17,16 @@
             border-color: lightcoral;
             border: solid 1px;
             box-shadow:0px 8px 8px 2px #888888;
+            overflow-y: auto;
         }
         .base{
-            position:absolute;
-            float: left;
-            bottom:10px;
-            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 480px;
+            position: fixed;
+            bottom: 40px;
+            left: 20;
         }
         .master{
             background: lightgreen;
@@ -30,6 +34,7 @@
             border-color: lightcoral;
             border: solid 1px;
             box-shadow: 8px 8px 5px #888888;
+            padding: 8px 8px;
         }
         .follower{
             background: gold;
@@ -37,6 +42,7 @@
             border-color: lightcoral;
             border: solid 1px;
             box-shadow:0px 8px 8px 2px #888888;
+            padding: 8px 8px;
         }
         .head{
             width: 34px;
@@ -68,79 +74,86 @@
             width: 100%;
             height: 60px;
         }
+        .buttoon{
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-direction: row;
+        }
     </style>
     <script>
         // 初始化一个 WebSocket 对象
-
-        var ws = new WebSocket('ws://localhost:8088/ws?userId='+new Date().getTime()+'&roomName=聊天室');
+        var userId=new Date().getTime();
+        var ws = new WebSocket('ws://localhost:8088/ws?userId='+userId+'&roomName=聊天室');
 
         // 建立 web socket 连接成功触发事件
         function send() {
                 const input = document.querySelector('input')
                 // 使用 send() 方法发送数据
                 let value = input.value
-                $("#follower").text(value);
                 ws.send(value);
-                add_div();
-                $("#msg").val();
+                add_div_master(value);
                 console.log('数据发送 '+value);
         }
         // 接收服务端数据时触发事件
         ws.onmessage = function(evt) {
             var received_msg = evt.data;
-            $("#master").text(received_msg);
             console.log('数据已接收 '+received_msg);
+            add_div_follower(received_msg);
         };
         // 断开 web socket 连接成功触发事件
         ws.onclose = function() {
             console.log('连接已关闭...');
         };
-        var detail_div = 1;
-        function add_div() {
-            var e = document.getElementById("chat");
+        var boxRight = 1;
+        function add_div_master(value) {
+            var chat = document.getElementById("chat");
             var div = document.createElement("div");
-            div.className = "form-group";
-            div.id = "details" + detail_div;
-            div.innerHTML = e.innerHTML;
-            document.getElementById("chat").appendChild(div);
-            detail_div++;
+            div.setAttribute("id", boxRight+"_"+boxRight);
+            div.setAttribute("class", "boxRight");
+            div.innerHTML = " <span class=\"follower\" id=\"master\">"+value+"</span>\n " +
+                "<img src=\"img/friend_boy.png\"  class=\"img-circle head\" style=\"float: right; margin-left: 12px; margin-right: 10px;\">";
+            chat.appendChild(div);
+            boxLeft++;
         }
-
-        function del_div() {
-            var id = "chat" + (detail_div - 1).toString();
-            var e = document.getElementById(id);
-            document.getElementById("chat").removeChild(e);
-            detail_div--;
+        var boxLeft = 1;
+        function add_div_follower(value) {
+            var chat = document.getElementById("chat");
+            var div = document.createElement("div");
+            div.setAttribute("id", boxLeft+"_"+boxLeft);
+            div.setAttribute("class", "boxLeft");
+            div.innerHTML = " <img src=\"img/snowman.png\" class=\"img-circle head\" style=\" margin-left: 10px;\">\n" +
+                "<span class=\"master\" style=\" margin-left: 10px;\" id=\"follower\">"+value+"</span>";
+            chat.appendChild(div);
+            boxLeft++;
         }
     </script>
 </head>
 <body>
-     <div style="height:800px;">
      <div class="content">
-          <div id="chat">
-             <div class="boxLeft">
+          <div id="chat" class="chat">
+             <div class="boxLeft" id="boxLeft">
                  <img src="img/snowman.png" class="img-circle head" style=" margin-left: 10px;">
-                 <span class="master" style=" margin-left: 10px;" id="follower">你好啊,很高兴认识你!</span>
+                   <span class="master" style=" margin-left: 10px;" id="follower">你好啊,很高兴认识你!</span>
              </div>
-             <div class="boxRight">
+             <div class="boxRight" id="boxRight">
                  <span class="follower" id="master">你高兴的太早了。</span>
                  <img src="img/friend_boy.png"  class="img-circle head" style="float: right; margin-left: 12px; margin-right: 10px;">
              </div>
          </div>
          <div class="base" >
-             <div class="col-sm-10" style="width:500px;bottom:10px;float:right;">
+             <div style="flex: 1">
                  <input type="text" id="msg" class="form-control follower" style="background: lavender"  placeholder="请输入...">
              </div>
-             <div style="float:right;top:10px;">
-                 <div style="float:left">
+             <div class="buttoon">
+                 <div style="margin: 0 10px">
                    <button type="button" class="btn btn-success shadow" onclick="send();">发送</button>
                  </div>
-                 <div style="margin-left:80px;;">
+                 <div>
                    <button type="button" class="btn btn-danger shadow">清空</button>
                  </div>
              </div>
          </div>
-     </div>
      </div>
 </body>
 </html>
