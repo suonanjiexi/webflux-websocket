@@ -25,7 +25,7 @@
             justify-content: space-between;
             width: 480px;
             position: fixed;
-            bottom: 40px;
+            bottom: 110px;
             left: 20;
         }
         .master{
@@ -91,9 +91,11 @@
                 const input = document.querySelector('input')
                 // 使用 send() 方法发送数据
                 let value = input.value
-                ws.send(value);
-                add_div_master(value);
-                console.log('数据发送 '+value);
+                if (value) {
+                    ws.send(value);
+                    add_div_master(value);
+                    console.log('数据发送 ' + value);
+                }
         }
         // 接收服务端数据时触发事件
         ws.onmessage = function(evt) {
@@ -112,7 +114,7 @@
             div.setAttribute("id", boxRight+"_"+boxRight);
             div.setAttribute("class", "boxRight");
             div.innerHTML = " <span class=\"follower\" id=\"master\">"+value+"</span>\n " +
-                "<img src=\"img/friend_boy.png\"  class=\"img-circle head\" style=\"float: right; margin-left: 12px; margin-right: 10px;\">";
+                "<img src=\"../img/friend_boy.png\"  class=\"img-circle head\" style=\"float: right; margin-left: 12px; margin-right: 10px;\">";
             chat.appendChild(div);
             boxLeft++;
         }
@@ -122,7 +124,7 @@
             var div = document.createElement("div");
             div.setAttribute("id", boxLeft+"_"+boxLeft);
             div.setAttribute("class", "boxLeft");
-            div.innerHTML = " <img src=\"img/snowman.png\" class=\"img-circle head\" style=\" margin-left: 10px;\">\n" +
+            div.innerHTML = " <img src=\"../img/snowman.png\" class=\"img-circle head\" style=\" margin-left: 10px;\">\n" +
                 "<span class=\"master\" style=\" margin-left: 10px;\" id=\"follower\">"+value+"</span>";
             chat.appendChild(div);
             boxLeft++;
@@ -133,12 +135,12 @@
      <div class="content">
           <div id="chat" class="chat">
              <div class="boxLeft" id="boxLeft">
-                 <img src="img/snowman.png" class="img-circle head" style=" margin-left: 10px;">
+                 <img src="../img/snowman.png" class="img-circle head" style=" margin-left: 10px;">
                    <span class="master" style=" margin-left: 10px;" id="follower">你好啊,很高兴认识你!</span>
              </div>
              <div class="boxRight" id="boxRight">
                  <span class="follower" id="master">你高兴的太早了。</span>
-                 <img src="img/friend_boy.png"  class="img-circle head" style="float: right; margin-left: 12px; margin-right: 10px;">
+                 <img src="../img/friend_boy.png" class="img-circle head" style="float: right; margin-left: 12px; margin-right: 10px;">
              </div>
          </div>
          <div class="base" >

@@ -50,4 +50,10 @@ public class MsgController {
             return Mono.just(String.format("Connection of id '%s' doesn't exist", sessionId));
         }
     }
+    @GetMapping("/hello")
+    public Mono<String> hello() {
+        String path = "ChatRoom";
+        return Mono.create(monoSink -> monoSink.success(path));
+    }
+
 }

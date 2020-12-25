@@ -1,9 +1,11 @@
 spring:
   application:
     name: websocket
+  thymeleaf:
+    cache: true
+    prefix: classpath:/templates/
+    suffix: .html
 server:
   netty:
     connection-timeout: 5000ms
   port: 8080
-  servlet:
-    context-path: /ws
