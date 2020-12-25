@@ -84,7 +84,7 @@
     <script>
         // 初始化一个 WebSocket 对象
         var userId=new Date().getTime();
-        var ws = new WebSocket('ws://127.0.0.1:8088/ws?userId='+userId+'&roomName=聊天室');
+        var ws = new WebSocket('ws://122.51.255.169:8088/ws?userId='+userId+'&roomName=聊天室');
 
         // 建立 web socket 连接成功触发事件
         function send() {
@@ -136,9 +136,17 @@
             var showContent = $("#content");
             showContent[0].scrollTop = showContent[0].scrollHeight;
         }
+        function keyLogin(){
+            if (event.keyCode==13)  //回车键的键值为13
+               send();
+        }
+        function clearMsg() {
+            console.log("clearMsg");
+            $("#msg").val("");
+        }
     </script>
 </head>
-<body>
+<body onkeydown="keyLogin()";>
      <div class="content" id="content">
           <div id="chat" class="chat">
              <div class="boxLeft" id="boxLeft">
@@ -159,7 +167,7 @@
                    <button type="button" class="btn btn-success" onclick="send();">发送</button>
                  </div>
                  <div>
-                   <button type="button" class="btn btn-danger">清空</button>
+                   <button type="button" class="btn btn-danger" onclick="clearMsg();">清空</button>
                  </div>
              </div>
          </div>
