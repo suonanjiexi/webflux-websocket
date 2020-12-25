@@ -84,7 +84,7 @@
     <script>
         // 初始化一个 WebSocket 对象
         var userId=new Date().getTime();
-        var ws = new WebSocket('ws://localhost:8088/ws?userId='+userId+'&roomName=聊天室');
+        var ws = new WebSocket('ws://122.51.255.169:8088/ws?userId='+userId+'&roomName=聊天室');
 
         // 建立 web socket 连接成功触发事件
         function send() {
@@ -94,7 +94,9 @@
                 if (value) {
                     ws.send(value);
                     add_div_master(value);
+                    $("#msg").val("");
                     console.log('数据发送 ' + value);
+                    scollToBottom();
                 }
         }
         // 接收服务端数据时触发事件
@@ -102,6 +104,7 @@
             var received_msg = evt.data;
             console.log('数据已接收 '+received_msg);
             add_div_follower(received_msg);
+            scollToBottom();
         };
         // 断开 web socket 连接成功触发事件
         ws.onclose = function() {
@@ -114,7 +117,7 @@
             div.setAttribute("id", boxRight+"_"+boxRight);
             div.setAttribute("class", "boxRight");
             div.innerHTML = " <span class=\"follower\" id=\"master\">"+value+"</span>\n " +
-                "<img src=\"../img/friend_boy.png\"  class=\"img-circle head\" style=\"float: right; margin-left: 12px; margin-right: 10px;\">";
+                "<img src=\"https://video-community-platform-saas.oss-cn-shenzhen.aliyuncs.com/icon/friend_boy.png\"  class=\"img-circle head\" style=\"float: right; margin-left: 12px; margin-right: 10px;\">";
             chat.appendChild(div);
             boxLeft++;
         }
@@ -124,23 +127,27 @@
             var div = document.createElement("div");
             div.setAttribute("id", boxLeft+"_"+boxLeft);
             div.setAttribute("class", "boxLeft");
-            div.innerHTML = " <img src=\"../img/snowman.png\" class=\"img-circle head\" style=\" margin-left: 10px;\">\n" +
+            div.innerHTML = " <img src=\"https://video-community-platform-saas.oss-cn-shenzhen.aliyuncs.com/icon/snowman.png\" class=\"img-circle head\" style=\" margin-left: 10px;\">\n" +
                 "<span class=\"master\" style=\" margin-left: 10px;\" id=\"follower\">"+value+"</span>";
             chat.appendChild(div);
             boxLeft++;
         }
+        function scollToBottom(){
+            var showContent = $("#content");
+            showContent[0].scrollTop = showContent[0].scrollHeight;
+        }
     </script>
 </head>
 <body>
-     <div class="content">
+     <div class="content" id="content">
           <div id="chat" class="chat">
              <div class="boxLeft" id="boxLeft">
-                 <img src="../img/snowman.png" class="img-circle head" style=" margin-left: 10px;">
+                 <img src="https://video-community-platform-saas.oss-cn-shenzhen.aliyuncs.com/icon/snowman.png" class="img-circle head" style=" margin-left: 10px;">
                    <span class="master" style=" margin-left: 10px;" id="follower">你好啊,很高兴认识你!</span>
              </div>
              <div class="boxRight" id="boxRight">
                  <span class="follower" id="master">你高兴的太早了。</span>
-                 <img src="../img/friend_boy.png" class="img-circle head" style="float: right; margin-left: 12px; margin-right: 10px;">
+                 <img src="https://video-community-platform-saas.oss-cn-shenzhen.aliyuncs.com/icon/friend_boy.png" class="img-circle head" style="float: right; margin-left: 12px; margin-right: 10px;">
              </div>
          </div>
          <div class="base" >

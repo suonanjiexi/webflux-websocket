@@ -25,7 +25,9 @@ public class WebConfig implements WebFluxConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**/**")
                 .addResourceLocations("classpath:/**/**")
-                .addResourceLocations("classpath:/img/**")
+                .addResourceLocations("classpath:/static/**")
+                .addResourceLocations("classpath:/resources/**")
+                .addResourceLocations("classpath:/resources/static/**")
                 .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
     }
     //引入spring-boot-starter-thymeleaf自动会注入该bean
