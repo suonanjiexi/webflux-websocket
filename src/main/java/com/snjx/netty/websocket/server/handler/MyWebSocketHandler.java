@@ -13,7 +13,6 @@ import org.springframework.web.reactive.socket.HandshakeInfo;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
-import org.springframework.web.reactive.socket.client.WebSocketClient;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -68,6 +67,7 @@ public class MyWebSocketHandler implements WebSocketHandler, CorsConfigurationSo
                     log.info("建立连接：{}，用户ip：{}，房间号：{}，用户：{}", session.getId(),remoteAddress.getHostName(), roomName, userId);
                 })
                 .map(WebSocketMessage::getPayloadAsText).map(message ->  message)
+                .log()
                 .doOnNext(message->{
                     sendBroadcast(roomName,userId,message);
                 })

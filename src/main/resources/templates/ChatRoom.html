@@ -84,7 +84,7 @@
     <script>
         // 初始化一个 WebSocket 对象
         var userId=new Date().getTime();
-        var ws = new WebSocket('ws://122.51.255.169:8088/ws?userId='+userId+'&roomName=聊天室');
+        var ws = new WebSocket('ws://localhost:8088/ws?userId='+userId+'&roomName=聊天室');
 
         // 建立 web socket 连接成功触发事件
         function send() {
@@ -101,10 +101,10 @@
         }
         // 接收服务端数据时触发事件
         ws.onmessage = function(evt) {
-            var received_msg = evt.data;
-            console.log('数据已接收 '+received_msg);
-            add_div_follower(received_msg);
-            scollToBottom();
+            //var received_msg = evt.data;
+            //console.log('数据已接收 '+received_msg);
+            //add_div_follower(received_msg);
+            //scollToBottom();
         };
         // 断开 web socket 连接成功触发事件
         ws.onclose = function() {
